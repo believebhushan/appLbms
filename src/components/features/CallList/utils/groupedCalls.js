@@ -26,7 +26,6 @@ const groupedcalls = ({ data, groupOn = 'phoneNumber' }) => {
     });
   
     // Convert the groupedResult object into an array of groups
-    console.log(Object.keys(groupedResult));
     const resultArray = Object.values(groupedResult);
     resultArray.sort((a, b) =>parseInt( b.lastCall.timestamp) - parseInt(a.lastCall.timestamp));
   

@@ -1,6 +1,14 @@
 import CallLogs from 'react-native-call-log';
 import { getData,storeData } from '../store/storageUtil';
-const syncLogs = async ()=>{
+import ReactNativeForegroundService from '@supersami/rn-foreground-service';
+import displayNotification from '../helpers/notifications/sendNotifications';
+import notifee from '@notifee/react-native';
+
+const syncLogs = async (fromEvent)=>{
+    const notificationId = 'appLBLMSSYNCING'
+    await displayNotification({title: 'Syncing..',body: `At ${new Date()}`,id:notificationId},);
+    let hasProcessed = false;
+    
     const userDetails = await getData("userDetails");
     const lastSynced = await getData("lastSynced");
     
@@ -61,10 +69,18 @@ const syncLogs = async ()=>{
           if(data?.data?.id){
             console.log("found",data?.data.id,data)
             await storeData("lastSynced",data.data.last_synced);
+            if(fromEvent){
+                ReactNativeForegroundService.stopAll();
+            }
           }
+          hasProcessed = true;
     }
     catch(err){
-        console.log(err,"error updateCallLogs.. .")
+        console.log(err,"error updateCallLogs.. .");
+        hasProcessed = true;
+    }
+    if(hasProcessed){
+        await notifee.cancelNotification(notificationId);
     }
 }
 

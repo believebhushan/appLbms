@@ -15,6 +15,7 @@ import CallList from './src/components/features/CallList';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import LbmsTabBar from './src/components/navigation/LbmsTabBar';
+import syncLogs from './src/utils/syncLogs';
 
 const Tab = createBottomTabNavigator();
 
@@ -26,6 +27,7 @@ function App() {
       console.log(userAuth, 'userAuth ');
       if (userAuth && userAuth.user) {
         setIsLoggedIn(true);
+        await syncLogs();
       }
     };
 
@@ -39,7 +41,7 @@ function App() {
             <Tab.Screen name="Home" component={MainAppScreen} options={{headerShown:true, headerTitle:'Dashboard'}} />
             <Tab.Screen name="Login" component={LoginScreen} />
             <Tab.Screen name="CallList" component={CallList} />
-            <Tab.Screen name="CallAnalyse" component={CallAnalyse} />
+            <Tab.Screen name="Messages" component={CallAnalyse} />
             <Tab.Screen name="ContactDetails" component={ContactList} />
             
           </Tab.Navigator>

@@ -5726,6 +5726,16 @@
     "lodash" "^4.17.21"
     "prop-types" "^15.7.2"
 
+"react-native-get-sms-android@^2.1.0":
+  "integrity" "sha512-yYPlJ4DkuC9HnUL0ni644pDjRFnSQkdGHowIY5ab56YFDKHIEZ1rKuBCEbCWF0HALyvH6qCyfdHqwpzTtIj97w=="
+  "resolved" "https://registry.npmjs.org/react-native-get-sms-android/-/react-native-get-sms-android-2.1.0.tgz"
+  "version" "2.1.0"
+
+"react-native-immediate-phone-call@^2.0.0":
+  "integrity" "sha512-ImE+KfiuuVS+A6BZ2jkVkJsXzvOpREh/YubdhgJ7CYdbMLbieBG56K28B+M3evMaMFzs9reGFmQpDTMTIJBjaQ=="
+  "resolved" "https://registry.npmjs.org/react-native-immediate-phone-call/-/react-native-immediate-phone-call-2.0.0.tgz"
+  "version" "2.0.0"
+
 "react-native-permissions@^3.10.0":
   "integrity" "sha512-6SB6JInfC0u54Wco8M1QsRoOGThnVjrhaks5IDWyYgwfi6JpXfTIi+F9fZZmRycyyPCgU8vGtht/5gF4VWEB/A=="
   "resolved" "https://registry.npmjs.org/react-native-permissions/-/react-native-permissions-3.10.0.tgz"

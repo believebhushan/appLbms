@@ -24,12 +24,12 @@ const requestPermission = async (permission) => {
 };
 
 const MainAppScreen = ({navigation}) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const currentUser = useSelector(state => state.auth.user);
 
   useEffect(() => {
     const doFunc = async () => {
-      await syncLogs();
+      await syncLogs(false);
       setLoading(false);
     };
   
@@ -40,7 +40,7 @@ const MainAppScreen = ({navigation}) => {
         };
     };
   
-    startD();
+    // startD();
   }, []);
   
 

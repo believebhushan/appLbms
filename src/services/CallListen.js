@@ -1,21 +1,40 @@
 import CallDetectorManager from 'react-native-call-detection';
-import {ToastAndroid} from 'react-native';
-import displayNotification from '../helpers/notifications/sendNotifications';
-import getAndUpdateRecentCall from '../utils/getAndUpdateRecentCall';
 import syncLogs from '../utils/syncLogs';
+import ReactNativeForegroundService from '@supersami/rn-foreground-service';
+import { ToastAndroid } from 'react-native';
 
+
+
+const syncInit =()=>{
+
+  ReactNativeForegroundService.start({
+    id: 1244,
+    title: "Syncing Logs...",
+    message: "If you find this notification means its working fine.",
+    icon: "ic_launcher",
+    setOnlyAlertOnce: true,
+    color: "#000000",
+  });
+
+  ReactNativeForegroundService.add_task(() => syncLogs(true), {
+    delay: 1000,
+    onLoop: false,
+    taskId: `${new Date().getTime()}`,
+    onError: (e) => console.log(`Error logging: `, e),
+  });
+}
 
 const startService = ()=>{
     let callDetector = new CallDetectorManager(
         async (event, number) => {
           console.log('event -> ', event + (number ? ' - ' + number : ''));
-          // ToastAndroid.showWithGravityAndOffset(
-          //   'A wild toast appeared! '+event + (number ? ' - ' + number : ''),
-          //   ToastAndroid.LONG,
-          //   ToastAndroid.BOTTOM,
-          //   25,
-          //   50,
-          // );
+          ToastAndroid.showWithGravityAndOffset(
+            'A wild toast appeared! '+event + (number ? ' - ' + number : ''),
+            ToastAndroid.LONG,
+            ToastAndroid.BOTTOM,
+            25,
+            50,
+          );
 
           // For iOS event will be either "Connected",
           // "Disconnected","Dialing" and "Incoming"
@@ -26,11 +45,7 @@ const startService = ()=>{
           
 
           if (event === 'Disconnected') {
-              // Do something call got disconnected
-              setTimeout(async ()=>{
-                await syncLogs();
-
-              },2000);
+             syncInit();
           } else if (event === 'Connected') {
               // Do something call got connected
               // This clause will only be executed for iOS

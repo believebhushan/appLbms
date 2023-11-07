@@ -21,7 +21,7 @@ const CallListTab = (isFocused) => {
 const routeBarMapping = {
   Home: HomeTab,
   ContactDetails: ContactListTab,
-  CallAnalyse: CallAnalyseTab,
+  Messages: CallAnalyseTab,
   CallList: CallListTab,
 };
 
