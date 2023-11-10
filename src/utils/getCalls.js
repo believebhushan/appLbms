@@ -19,7 +19,6 @@ const getCalls = async ({filters: defaultFilters})=>{
     const CALL_LIST_UPDATED_TILL = "call_list_updated_till";
     let lastUpdatedTill = await getData(CALL_LIST_UPDATED_TILL);
     console.log(lastUpdatedTill,"lastUpdatedTill");
-    lastUpdatedTill=""
     if(lastUpdatedTill==""){
       let data = await CallLogs.loadAll();
       const groupedDetails = groupedcalls({data: data});
