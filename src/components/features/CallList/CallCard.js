@@ -99,7 +99,7 @@ const CallCard = ({data}) => (
     </View>
     <TouchableOpacity
       style={{flex: 2}}
-      onPress={() => RNImmediatePhoneCall.immediatePhoneCall('+91'+data.phoneNumber.slice(data.phoneNumber.length-10,data.phoneNumber.length))}>
+      onPress={() => RNImmediatePhoneCall.immediatePhoneCall('+91'+data.phoneNumber.slice(data?.phoneNumber?.length-10,data.phoneNumber?.length))}>
       <View>
         <Ionicon
           name="call"

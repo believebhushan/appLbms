@@ -2,10 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
-  FlatList,
-  TouchableOpacity,
-  PermissionsAndroid,
-  Button,
   StyleSheet,
 } from 'react-native';
 import {useSelector} from 'react-redux';
@@ -70,7 +66,7 @@ const MainAppScreen = ({navigation}) => {
       ) : (
         <>
           <Text style={styles.welcomeText}>Welcome {currentUser.first_name || currentUser.email}</Text>
-          <Text style={styles.welcomeText}>Updated Till {istTimeString}</Text>
+          <Text style={styles.welcomeText}>Updated Till {currentUser.last_synced}</Text>
           <View style={styles.content}>
             <DialerScreen />
           </View>
@@ -89,7 +85,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     alignItems: 'center',
-    marginTop:200
   },
   welcomeText: {
     padding: 10,

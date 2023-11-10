@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
   navItem: {
     borderRightWidth: 1,
     flex:1,
-    alignItems:'center'
+    alignItems:'center',
+    padding:5
   },
   navigation: {
     flexDirection: 'row',

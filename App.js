@@ -1,23 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
 
 import {Provider} from 'react-redux';
 
-import {NavigationContainer} from '@react-navigation/native';
-
 import store from './src/store/configureStore';
 import LoginScreen from './src/components/Login/LoginScreen';
-import MainAppScreen from './src/components/features/Home/MainAppScreen';
 import {getData} from './src/store/storageUtil';
-import ContactList from './src/components/features/Contacts';
-import CallAnalyse from './src/components/features/CallAnalyse';
-import CallList from './src/components/features/CallList';
 
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import LbmsTabBar from './src/components/navigation/LbmsTabBar';
 import syncLogs from './src/utils/syncLogs';
 
-const Tab = createBottomTabNavigator();
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Dashboard from './src/components/Dashboard';
+
+import { NavigationContainer } from '@react-navigation/native';
+import SignupScreen from './src/components/Login/SIgnupScreen';
+
+
+const StackNavigator = createNativeStackNavigator();
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -36,37 +35,16 @@ function App() {
 
   return (
     <Provider store={store}>
-        <NavigationContainer>
-          <Tab.Navigator initialRouteName={isLoggedIn ? 'CallList' : 'Login'} tabBar={props => <LbmsTabBar {...props} />}>
-            <Tab.Screen name="Home" component={MainAppScreen} options={{headerShown:true, headerTitle:'Dashboard'}} />
-            <Tab.Screen name="Login" component={LoginScreen} />
-            <Tab.Screen name="CallList" component={CallList} />
-            <Tab.Screen name="Messages" component={CallAnalyse} />
-            <Tab.Screen name="ContactDetails" component={ContactList} />
-            
-          </Tab.Navigator>
-        </NavigationContainer>
+      <NavigationContainer>
+      <StackNavigator.Navigator initialRouteName={isLoggedIn? "Dashboard":"Login"}>
+          <StackNavigator.Screen name="Dashboard" component={Dashboard} options={{headerShown:false}} />
+          <StackNavigator.Screen name="Login" component={LoginScreen} />
+          <StackNavigator.Screen name="Signup" component={SignupScreen} />
+       </StackNavigator.Navigator>
+      </NavigationContainer>
+      
     </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;

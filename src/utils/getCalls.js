@@ -24,12 +24,14 @@ const getCalls = async ({filters: defaultFilters})=>{
       const groupedDetails = groupedcalls({data: data});
 
       await storeData(CALL_LIST,groupedDetails);
+      await storeData(CALL_LIST_UPDATED_TILL,`${now.getTime()}`);
+
       return groupedDetails;
     }
     else{
         const lastUpdatedTillTimeStamp = parseInt(lastUpdatedTill);
         let data = await CallLogs.load(-1,{minTimestamp:lastUpdatedTillTimeStamp+1});
-        const currentDetails = await getData(CALL_LIST);
+        const currentDetails = await getData(CALL_LIST) || [];
         console.log(currentDetails.length,"vgh")
         let groupedDetailsNew = [];
         (currentDetails || []).forEach((ele)=>{

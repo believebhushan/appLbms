@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  RefreshControl,
+} from 'react-native';
 import getCalls from '../../../utils/getCalls';
 import CallCard from './CallCard';
-import groupedcalls from './utils/groupedCalls';
-import { storeData, getData } from '../../store/storageUtil';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
+import ListLoading from './ListLoading';
 
 const PAGE_SIZE = 30;
 
@@ -19,11 +24,9 @@ const CallList = () => {
     setLoadingMore(true);
 
     setTimeout(async () => {
-      // Simulate an API call for loading more data
       setPageIndex(pageIndex + 1); // Increment the page index
       setLoadingMore(false);
     }, 1000); // Simulated delay for loading more data
-
   };
 
   const refreshData = async () => {
@@ -31,19 +34,19 @@ const CallList = () => {
 
     setTimeout(async () => {
       // Simulate an API call for refreshing data
-      const newData = await getCalls({ filters: {} });
+      const newData = await getCalls({filters: {}});
       setData(newData);
       setPageIndex(0); // Reset the page index
       setRefreshing(false);
     }, 1000); // Simulated delay for refreshing data
-
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      const newData = await getCalls({ filters: {} });
-      setData(newData);
+      const newData = await getCalls({filters: {}});
       setLoading(false);
+      setData(newData);
+     
     };
 
     fetchData();
@@ -52,38 +55,41 @@ const CallList = () => {
   useFocusEffect(
     React.useCallback(() => {
       const fetchData = async () => {
-        const newData = await getCalls({ filters: {} });
+        const newData = await getCalls({filters: {}});
         setData(newData);
         setLoading(false);
       };
-  
+
       fetchData();
-    }, [])
+    }, []),
   );
 
   const paginatedData = data.slice(0, (pageIndex + 1) * PAGE_SIZE);
 
   return (
     <View>
-      <FlatList
-        data={paginatedData}
-        keyExtractor={(item, index) => `${item.timestamp}:${item.phoneNumber}:${index}`}
-        initialNumToRender={10}
-        onEndReached={loadMoreData}
-        onEndReachedThreshold={0.1}
-        ListFooterComponent={() => loadingMore ? <ActivityIndicator /> : null}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={refreshData}
-          />
-        }
-        renderItem={({ item }) => (
-          <TouchableOpacity>
-            <CallCard data={item} />
-          </TouchableOpacity>
-        )}
-      />
+
+        <FlatList
+          data={paginatedData}
+          keyExtractor={(item, index) =>
+            `${item.timestamp}:${item.phoneNumber}:${index}`
+          }
+          initialNumToRender={10}
+          onEndReached={loadMoreData}
+          onEndReachedThreshold={0.1}
+          ListFooterComponent={() =>
+            loadingMore ? <ActivityIndicator /> : null
+          }
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
+          }
+          renderItem={({item}) => (
+            <TouchableOpacity>
+              <CallCard data={item} />
+            </TouchableOpacity>
+          )}
+        />
+
     </View>
   );
 };

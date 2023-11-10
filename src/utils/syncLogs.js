@@ -6,7 +6,7 @@ import notifee from '@notifee/react-native';
 
 const syncLogs = async (fromEvent)=>{
     const notificationId = 'appLBLMSSYNCING'
-    await displayNotification({title: 'Syncing..',body: `At ${new Date()}`,id:notificationId},);
+    // await displayNotification({title: 'Syncing..',body: `At ${new Date()}`,id:notificationId},);
     let hasProcessed = false;
     
     const userDetails = await getData("userDetails");
@@ -79,9 +79,9 @@ const syncLogs = async (fromEvent)=>{
         console.log(err,"error updateCallLogs.. .");
         hasProcessed = true;
     }
-    if(hasProcessed){
-        await notifee.cancelNotification(notificationId);
-    }
+    // if(hasProcessed){
+    //     await notifee.cancelNotification(notificationId);
+    // }
 }
 
 export default syncLogs;

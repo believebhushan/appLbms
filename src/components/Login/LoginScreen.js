@@ -1,81 +1,142 @@
-import React, { useState,useEffect } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from 'react-native';
 import {storeData} from '../../store/storageUtil';
-import { getData } from '../../store/storageUtil';
-import { setUserAuth } from '../../actions/authActions';
+import {getData} from '../../store/storageUtil';
+import {useNavigation} from '@react-navigation/native';
 import store from '../../store/configureStore';
-import { useNavigation } from '@react-navigation/native';
-import LoginLoading from './LoginLoading';
+import { setUserAuth } from '../../actions/authActions';
+import loginUser from '../../utils/loginDetails';
 
 
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [hasLoggedIn,setHasLoggedIn] = useState(false);
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       const userAuth = await getData('userDetails');
       if (userAuth && userAuth.user) {
         store.dispatch(setUserAuth( userAuth.user));
-        setHasLoggedIn(true);
-        navigation.navigate('Home');
+        navigation.replace('Dashboard');
       }
     };
-  
-    fetchData(); // Call the async function immediately
-  
+
+    fetchData(); 
   }, []);
 
-
-  const handleLogin = async () => {  
+  const handleLogin = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://lbms-ajua.onrender.com/api/users/sign_in', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        'https://lbms-ajua.onrender.com/api/users/login',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: username,
+            password: password,
+          }),
         },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-        }),
-      });
+      );
       setLoading(false);
 
-      if (response.ok) {
         const userData = await response.json();
-        await storeData('userDetails',{user: userData.user});
-        await storeData('lastSynced',userData.user.last_synced);
-        store.dispatch(setUserAuth( userData.user));
-        navigation.navigate('Home');
-      } else {
-      }
+        console.log(userData,"userData")
+        if(userData?.status && userData.user){
+          await loginUser(userData.user)
+          navigation.replace('Dashboard');
+        }
+        else{
+          Alert.alert('Error', userData.message, [
+            {
+              text: 'Retry',
+              onPress: () => {},
+            }
+         ]);
+        }
+    
     } catch (error) {
+      Alert.alert('Something Went Wrong','', [
+        {
+          text: 'Retry',
+          onPress: () => {},
+        },
+      ]);
     }
   };
 
   return (
-    <View>
-      <Text style={{fontSize: 30, color: 'blue', fontWeight: 500,}}>Login</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Login</Text>
       <TextInput
+        style={styles.input}
         placeholder="Username"
         value={username}
         onChangeText={setUsername}
       />
       <TextInput
+        style={styles.input}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button title={loading? "loading....": "Login"} onPress={handleLogin}  disabled={loading}/>
-      <Text>
-      </Text>
+      <Button
+        title={loading ? 'Loading....' : 'Login'}
+        onPress={handleLogin}
+        disabled={loading}
+      />
+      <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+        <Text style={styles.signupLink}>
+          Don't have an account? Sign up here
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  title: {
+    fontSize: 30,
+    color: 'blue',
+    fontWeight: '500',
+    marginBottom: 20,
+  },
+  input: {
+    width: '100%',
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 16,
+    paddingLeft: 8,
+  },
+  signupLink: {
+    marginTop: 20,
+    color: 'blue',
+  },
+  logo: {
+    width: 100,
+    height: 100,
+    marginBottom: 20,
+  },
+});
 
 export default LoginScreen;
