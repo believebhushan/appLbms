@@ -46,7 +46,6 @@ const CallList = () => {
       const newData = await getCalls({filters: {}});
       setLoading(false);
       setData(newData);
-     
     };
 
     fetchData();
@@ -67,30 +66,34 @@ const CallList = () => {
   const paginatedData = data.slice(0, (pageIndex + 1) * PAGE_SIZE);
 
   return (
-    <View>
+    <>
+      {loading && <ListLoading></ListLoading>}
 
-        <FlatList
-          data={paginatedData}
-          keyExtractor={(item, index) =>
-            `${item.timestamp}:${item.phoneNumber}:${index}`
-          }
-          initialNumToRender={10}
-          onEndReached={loadMoreData}
-          onEndReachedThreshold={0.1}
-          ListFooterComponent={() =>
-            loadingMore ? <ActivityIndicator /> : null
-          }
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
-          }
-          renderItem={({item}) => (
-            <TouchableOpacity>
-              <CallCard data={item} />
-            </TouchableOpacity>
-          )}
-        />
-
-    </View>
+      {!loading && (
+        <View>
+          <FlatList
+            data={paginatedData}
+            keyExtractor={(item, index) =>
+              `${item.timestamp}:${item.phoneNumber}:${index}`
+            }
+            initialNumToRender={10}
+            onEndReached={loadMoreData}
+            onEndReachedThreshold={0.1}
+            ListFooterComponent={() =>
+              loadingMore ? <ActivityIndicator /> : null
+            }
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={refreshData} />
+            }
+            renderItem={({item}) => (
+              <TouchableOpacity>
+                <CallCard data={item} />
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+      )}
+    </>
   );
 };
 

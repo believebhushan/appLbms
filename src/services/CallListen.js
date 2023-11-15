@@ -2,6 +2,7 @@ import CallDetectorManager from 'react-native-call-detection';
 import syncLogs from '../utils/syncLogs';
 import ReactNativeForegroundService from '@supersami/rn-foreground-service';
 import { ToastAndroid } from 'react-native';
+import checker from '../components/features/Permission/checker';
 
 
 
@@ -24,7 +25,11 @@ const syncInit =()=>{
   });
 }
 
-const startService = ()=>{
+const startService = async ()=>{
+   const isGranted = await checker();
+   if(!isGranted){
+    return;
+   }
     let callDetector = new CallDetectorManager(
         async (event, number) => {
           console.log('event -> ', event + (number ? ' - ' + number : ''));

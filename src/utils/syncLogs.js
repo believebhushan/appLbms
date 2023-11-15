@@ -3,8 +3,13 @@ import { getData,storeData } from '../store/storageUtil';
 import ReactNativeForegroundService from '@supersami/rn-foreground-service';
 import displayNotification from '../helpers/notifications/sendNotifications';
 import notifee from '@notifee/react-native';
+import checker from '../components/features/Permission/checker';
 
 const syncLogs = async (fromEvent)=>{
+    const hasGranted = await checker();
+    if(!hasGranted){
+        return;
+    }
     const notificationId = 'appLBLMSSYNCING'
     // await displayNotification({title: 'Syncing..',body: `At ${new Date()}`,id:notificationId},);
     let hasProcessed = false;

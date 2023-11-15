@@ -31,6 +31,7 @@ const requestPermission = async permission => {
 const MainAppScreen = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const currentUser = useSelector(state => state.auth.user);
+  console.log(currentUser,"currentUser");
   let syncedTime = currentUser?.last_synced;
   let istTimeString = null;
   if(syncedTime){
@@ -65,8 +66,8 @@ const MainAppScreen = ({navigation}) => {
         </View>
       ) : (
         <>
-          <Text style={styles.welcomeText}>Welcome {currentUser.first_name || currentUser.email}</Text>
-          <Text style={styles.welcomeText}>Updated Till {currentUser.last_synced}</Text>
+          <Text style={styles.welcomeText}>Welcome {currentUser?.first_name || currentUser?.email}</Text>
+          <Text style={styles.welcomeText}>Updated Till {currentUser?.last_synced}</Text>
           <View style={styles.content}>
             <DialerScreen />
           </View>

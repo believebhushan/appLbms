@@ -8,7 +8,6 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import {storeData} from '../../store/storageUtil';
 import {getData} from '../../store/storageUtil';
 import {useNavigation} from '@react-navigation/native';
 import store from '../../store/configureStore';
@@ -91,7 +90,6 @@ const LoginScreen = () => {
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
       />
       <Button
         title={loading ? 'Loading....' : 'Login'}

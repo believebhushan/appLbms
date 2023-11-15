@@ -1,19 +1,25 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import ShimmerPlaceholder from 'react-native-shimmer-placeholder';
+import React, { useEffect } from 'react';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 
 const ListLoading = () => {
+  useEffect(() => {
+    // Add any initialization logic or data fetching here
+  }, []);
+
   return (
     <View style={styles.container}>
-      {[...Array(10).keys()].map((index) => (
-        <ShimmerPlaceholder
-          key={index}
-          style={styles.shimmerBlock}
-          shimmerColors={['#e2e2e2', '#d9d9d9', '#c0c0c0']}
-          duration={1000}
-          autoRun
-        />
-      ))}
+      {/* You can adjust the size prop for a larger loading indicator */}
+      <ActivityIndicator
+        size="large"
+        color="#0000ff"
+        animating={true}
+        style={styles.horizontalActivityIndicator}
+      />
+
+      <Text style={styles.appName}>
+        Processing.....................................
+        It may take some time. Please be patient.
+      </Text>
     </View>
   );
 };
@@ -23,12 +29,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    margin:0
+    backgroundColor: '#fff', // Change to your preferred background color
   },
-  shimmerBlock: {
-    width: '100%',
-    height: 40,
-    marginBottom: 30, // Adjust the margin between blocks as needed
+  horizontalActivityIndicator: {
+    transform: [{ rotate: '90deg' }], // Rotate the indicator 90 degrees for horizontal spinning
+  },
+  appName: {
+    fontSize: 24,
+    color: '#000', // Change to your preferred text color
+    marginTop: 16,
+    padding:10
   },
 });
 
