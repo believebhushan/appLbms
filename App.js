@@ -1,31 +1,42 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
 
 import {Provider} from 'react-redux';
 
-import {NavigationContainer} from '@react-navigation/native';
-
-import store from './src/store/configureStore';
 import LoginScreen from './src/components/Login/LoginScreen';
-import MainAppScreen from './src/components/features/Home/MainAppScreen';
 import {getData} from './src/store/storageUtil';
-import ContactList from './src/components/features/Contacts';
-import CallAnalyse from './src/components/features/CallAnalyse';
-import CallList from './src/components/features/CallList';
 
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import LbmsTabBar from './src/components/navigation/LbmsTabBar';
 
-const Tab = createBottomTabNavigator();
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Dashboard from './src/components/Dashboard';
+
+import {NavigationContainer} from '@react-navigation/native';
+import SignupScreen from './src/components/Login/SIgnupScreen';
+import PermissionScreen from './src/components/features/Permission';
+import checker from './src/components/features/Permission/checker';
+import SplashScreen from './src/components/SplashScreen';
+
+
+import store from "./src/store/configureStore";
+import { setUserAuth } from './src/actions/authActions';
+
+
+const StackNavigator = createNativeStackNavigator();
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [allPermissionsGranted, setArePermissionsGranted] = useState(false);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       const userAuth = await getData('userDetails');
-      console.log(userAuth, 'userAuth ');
+      const allPermissionsGranted = await checker();
+      setArePermissionsGranted(allPermissionsGranted);
       if (userAuth && userAuth.user) {
         setIsLoggedIn(true);
+        setLoading(false);
+        store.dispatch(setUserAuth( userAuth.user));
+      } else {
+        setLoading(false);
       }
     };
 
@@ -34,37 +45,33 @@ function App() {
 
   return (
     <Provider store={store}>
-        <NavigationContainer>
-          <Tab.Navigator initialRouteName={isLoggedIn ? 'CallList' : 'Login'} tabBar={props => <LbmsTabBar {...props} />}>
-            <Tab.Screen name="Home" component={MainAppScreen} options={{headerShown:true, headerTitle:'Dashboard'}} />
-            <Tab.Screen name="Login" component={LoginScreen} />
-            <Tab.Screen name="CallList" component={CallList} />
-            <Tab.Screen name="CallAnalyse" component={CallAnalyse} />
-            <Tab.Screen name="ContactDetails" component={ContactList} />
-            
-          </Tab.Navigator>
-        </NavigationContainer>
+      <NavigationContainer>
+        {loading ? (
+          <SplashScreen />
+        ) : (
+          <StackNavigator.Navigator
+            initialRouteName={
+              allPermissionsGranted && isLoggedIn
+                ? 'Dashboard'
+                : ( allPermissionsGranted && !isLoggedIn ? 'Login' : 'PermissonScreen')
+            }>
+            <StackNavigator.Screen
+              name="Dashboard"
+              component={Dashboard}
+              options={{headerShown: false}}
+            />
+            <StackNavigator.Screen name="Login" component={LoginScreen} />
+            <StackNavigator.Screen name="Signup" component={SignupScreen} />
+            <StackNavigator.Screen
+              name="PermissonScreen"
+              component={PermissionScreen}
+              options={{headerShown: false}}
+            />
+          </StackNavigator.Navigator>
+        )}
+      </NavigationContainer>
     </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;

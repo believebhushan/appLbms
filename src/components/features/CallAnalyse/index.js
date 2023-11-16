@@ -1,30 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import { View, FlatList, Text, ActivityIndicator } from 'react-native';
+import SmsAndroid from 'react-native-get-sms-android';
+import SmsCard from './SmsCard';
 
+
+
+
+
+const sendMessage=()=>{
+
+}
 const CallAnalyse = () => {
-  const [data, setData] = useState([]); // Data for the FlatList
-  const [page, setPage] = useState(1); // Current page
-  const [loading, setLoading] = useState(false); // Loading state
+  const [data, setData] = useState([]); 
+  const [page, setPage] = useState(1); 
+  const [loading, setLoading] = useState(false);
+  const [indexFrom, setIndexFrom] = useState(0)
 
-  // Define a function to load data for the given page
-  const loadPage = (pageNumber) => {
-    setLoading(true); // Set loading to true before fetching data
-    // Fetch your data based on the page number and update the 'data' state
-    // You can use an API call or some other data source here
-    // For demonstration, we'll simulate data loading
-    setTimeout(() => {
-      const newData = Array.from({ length: 20 }, (_, index) => {
-        return `Item ${index + 1 + (pageNumber - 1) * 20}`;
-      });
+  const now = new Date();
+  const perpage = 40;
+  const filter = {
+    box: 'inbox', 
+    maxDate: now.getTime(),
+  }
 
-      setData((prevData) => [...prevData, ...newData]);
-      setLoading(false); // Set loading to false after data is loaded
-    }, 3000); // Simulating a delay (replace with your actual data loading code)
+  const loadPage = async (pageNumber) => {
+    setLoading(true);
+    const dataToSet = []
+    SmsAndroid.list(
+      JSON.stringify(filter),
+      (fail) => {
+        console.log('Failed with this error: ' + fail);
+      },
+      (count, smsList) => {
+        console.log('Count: ', count);
+        var arr = JSON.parse(smsList);
+        console.log('List: ', arr[0]);
+
+     
+        arr.forEach(function(object) {
+          dataToSet.push(object)
+        });
+        setData(dataToSet);
+        setIndexFrom(pageNumber*perpage-1);
+      },
+    );
+    await sendMessage();
+    setLoading(false);
   };
 
   useEffect(() => {
     loadPage(page);
-  }, [page]);
+  }, []);
 
   const renderFooter = () => {
     if (loading) {
@@ -42,7 +68,7 @@ const CallAnalyse = () => {
       <FlatList
         data={data}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => <Text>{item}</Text>}
+        renderItem={({ item }) => <SmsCard data={item}></SmsCard>}
         onEndReached={() => {
           if (!loading) {
             // Load more data when reaching the end of the list

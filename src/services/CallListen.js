@@ -1,21 +1,23 @@
 import CallDetectorManager from 'react-native-call-detection';
-import {ToastAndroid} from 'react-native';
-import displayNotification from '../helpers/notifications/sendNotifications';
-import getAndUpdateRecentCall from '../utils/getAndUpdateRecentCall';
-import syncLogs from '../utils/syncLogs';
+import { ToastAndroid } from 'react-native';
+import checker from '../components/features/Permission/checker';
+import backgroundSync from './backgroundSync';
 
-
-const startService = ()=>{
+const startService = async ()=>{
+   const isGranted = await checker();
+   if(!isGranted){
+    return;
+   }
     let callDetector = new CallDetectorManager(
         async (event, number) => {
           console.log('event -> ', event + (number ? ' - ' + number : ''));
-          // ToastAndroid.showWithGravityAndOffset(
-          //   'A wild toast appeared! '+event + (number ? ' - ' + number : ''),
-          //   ToastAndroid.LONG,
-          //   ToastAndroid.BOTTOM,
-          //   25,
-          //   50,
-          // );
+          ToastAndroid.showWithGravityAndOffset(
+            'A wild toast appeared! '+event + (number ? ' - ' + number : ''),
+            ToastAndroid.LONG,
+            ToastAndroid.BOTTOM,
+            25,
+            50,
+          );
 
           // For iOS event will be either "Connected",
           // "Disconnected","Dialing" and "Incoming"
@@ -26,11 +28,7 @@ const startService = ()=>{
           
 
           if (event === 'Disconnected') {
-              // Do something call got disconnected
-              setTimeout(async ()=>{
-                await syncLogs();
-
-              },2000);
+            backgroundSync();
           } else if (event === 'Connected') {
               // Do something call got connected
               // This clause will only be executed for iOS

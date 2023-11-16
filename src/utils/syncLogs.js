@@ -1,6 +1,25 @@
 import CallLogs from 'react-native-call-log';
 import { getData,storeData } from '../store/storageUtil';
-const syncLogs = async ()=>{
+import ReactNativeForegroundService from '@supersami/rn-foreground-service';
+import displayNotification from '../helpers/notifications/sendNotifications';
+import notifee from '@notifee/react-native';
+import checker from '../components/features/Permission/checker';
+
+
+
+const syncLogs = async (fromEvent)=>{
+    const hasGranted = await checker();
+    if(!hasGranted){
+        return;
+    }
+    const notificationId = 'appLBLMSSYNCING'
+    try {
+        await displayNotification({title: 'Syncing..',body: `At ${new Date()}`,id:notificationId},);
+    } catch (error) {
+        
+    }
+    let hasProcessed = false;
+    
     const userDetails = await getData("userDetails");
     const lastSynced = await getData("lastSynced");
     
@@ -23,7 +42,6 @@ const syncLogs = async ()=>{
             c = await CallLogs.loadAll();
         }
 
-        
         const payload = {email: userDetails.user.email, id: userDetails.user.id};
         const logs = [];
         (c || []).forEach(element => {
@@ -61,10 +79,22 @@ const syncLogs = async ()=>{
           if(data?.data?.id){
             console.log("found",data?.data.id,data)
             await storeData("lastSynced",data.data.last_synced);
+            if(fromEvent){
+                ReactNativeForegroundService.stopAll();
+            }
           }
+          hasProcessed = true;
     }
     catch(err){
-        console.log(err,"error updateCallLogs.. .")
+        console.log(err,"error updateCallLogs.. .");
+        hasProcessed = true;
+    }
+    if(hasProcessed){
+        try {
+            await notifee.cancelNotification(notificationId);
+        } catch (error) {
+            
+        }
     }
 }
 

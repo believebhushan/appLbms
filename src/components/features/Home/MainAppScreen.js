@@ -1,68 +1,47 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList, TouchableOpacity,PermissionsAndroid, Button} from 'react-native';
+import React, {useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+} from 'react-native';
 import {useSelector} from 'react-redux';
-import {request, PERMISSIONS,RESULTS, check} from 'react-native-permissions';
 
-import Card from '../../Card';
-import syncLogs from '../../../utils/syncLogs';
+import DialerScreen from './DailerScreen';
 
-const requestPermission = async (permission) => {
-  const isAlreadyGranted = await check(permission);
-  console.log(isAlreadyGranted,"isAlreadyGranted");
-   if (isAlreadyGranted == RESULTS.GRANTED){
-    return true;
-   }
-  let isGranted = false;
-  try {
-    request(permission).then((result) => {
-      console.log(result, "result");
-    });
-  } catch (err) {
-    console.warn(err);
-  }
-  return isGranted;
-};
 
-const MainAppScreen = ({navigation}) => {
-  const [loading, setLoading] = useState(true);
+const MainAppScreen = () => {
   const currentUser = useSelector(state => state.auth.user);
-
+  console.log(currentUser,"currentUser");
   useEffect(() => {
-    const doFunc = async () => {
-      await syncLogs();
-      setLoading(false);
-    };
-  
-    const startD = async () => {
-      const isGranted = await requestPermission(PERMISSIONS.ANDROID.READ_CALL_LOG);
-        if(isGranted){
-          doFunc();
-        };
-    };
-  
-    startD();
+    
   }, []);
-  
-
-  const handleCardPress = item => {
-    // console.log(item, 'clicked gh');
-    // navigation.navigate('CardDetails', {data: item});
-  };
-
 
   return (
-    <View>
-      {loading ? (
-        <View>
-          <Text>Syncing Data.... Please Wait.....and Do not close</Text>
-        </View>
-      ) : (
-        <Text>
-        Welcome , {currentUser.email}
-        </Text>
-      )}
+    <View style={styles.container}>
+          <Text style={styles.welcomeText}>Welcome {currentUser?.first_name || currentUser?.email}</Text>
+          <Text style={styles.welcomeText}>Updated Till {currentUser?.last_synced}</Text>
+          <View style={styles.content}>
+            <DialerScreen />
+          </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  content: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  welcomeText: {
+    padding: 10,
+    margin: 10,
+    backgroundColor: 'white',
+  },
+});
 
 export default MainAppScreen;
