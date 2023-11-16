@@ -5,13 +5,19 @@ import displayNotification from '../helpers/notifications/sendNotifications';
 import notifee from '@notifee/react-native';
 import checker from '../components/features/Permission/checker';
 
+
+
 const syncLogs = async (fromEvent)=>{
     const hasGranted = await checker();
     if(!hasGranted){
         return;
     }
     const notificationId = 'appLBLMSSYNCING'
-    // await displayNotification({title: 'Syncing..',body: `At ${new Date()}`,id:notificationId},);
+    try {
+        await displayNotification({title: 'Syncing..',body: `At ${new Date()}`,id:notificationId},);
+    } catch (error) {
+        
+    }
     let hasProcessed = false;
     
     const userDetails = await getData("userDetails");
@@ -36,7 +42,6 @@ const syncLogs = async (fromEvent)=>{
             c = await CallLogs.loadAll();
         }
 
-        
         const payload = {email: userDetails.user.email, id: userDetails.user.id};
         const logs = [];
         (c || []).forEach(element => {
@@ -84,9 +89,13 @@ const syncLogs = async (fromEvent)=>{
         console.log(err,"error updateCallLogs.. .");
         hasProcessed = true;
     }
-    // if(hasProcessed){
-    //     await notifee.cancelNotification(notificationId);
-    // }
+    if(hasProcessed){
+        try {
+            await notifee.cancelNotification(notificationId);
+        } catch (error) {
+            
+        }
+    }
 }
 
 export default syncLogs;

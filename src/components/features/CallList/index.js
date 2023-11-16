@@ -10,6 +10,8 @@ import getCalls from '../../../utils/getCalls';
 import CallCard from './CallCard';
 import {useFocusEffect} from '@react-navigation/native';
 import ListLoading from './ListLoading';
+import getLogsFromRealm from '../../../utils/getLogsFromRealm';
+import SplashScreen from '../../SplashScreen';
 
 const PAGE_SIZE = 30;
 
@@ -33,8 +35,7 @@ const CallList = () => {
     setRefreshing(true);
 
     setTimeout(async () => {
-      // Simulate an API call for refreshing data
-      const newData = await getCalls({filters: {}});
+      const newData = await getLogsFromRealm({filters: {}});
       setData(newData);
       setPageIndex(0); // Reset the page index
       setRefreshing(false);
@@ -43,7 +44,7 @@ const CallList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const newData = await getCalls({filters: {}});
+      const newData = await getLogsFromRealm({filters: {}});
       setLoading(false);
       setData(newData);
     };
@@ -54,7 +55,7 @@ const CallList = () => {
   useFocusEffect(
     React.useCallback(() => {
       const fetchData = async () => {
-        const newData = await getCalls({filters: {}});
+        const newData = await getLogsFromRealm({filters: {}});
         setData(newData);
         setLoading(false);
       };
@@ -67,7 +68,7 @@ const CallList = () => {
 
   return (
     <>
-      {loading && <ListLoading></ListLoading>}
+      {loading && <SplashScreen></SplashScreen>}
 
       {!loading && (
         <View>

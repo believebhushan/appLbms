@@ -1,29 +1,7 @@
 import CallDetectorManager from 'react-native-call-detection';
-import syncLogs from '../utils/syncLogs';
-import ReactNativeForegroundService from '@supersami/rn-foreground-service';
 import { ToastAndroid } from 'react-native';
 import checker from '../components/features/Permission/checker';
-
-
-
-const syncInit =()=>{
-
-  ReactNativeForegroundService.start({
-    id: 1244,
-    title: "Syncing Logs...",
-    message: "If you find this notification means its working fine.",
-    icon: "ic_launcher",
-    setOnlyAlertOnce: true,
-    color: "#000000",
-  });
-
-  ReactNativeForegroundService.add_task(() => syncLogs(true), {
-    delay: 1000,
-    onLoop: false,
-    taskId: `${new Date().getTime()}`,
-    onError: (e) => console.log(`Error logging: `, e),
-  });
-}
+import backgroundSync from './backgroundSync';
 
 const startService = async ()=>{
    const isGranted = await checker();
@@ -50,7 +28,7 @@ const startService = async ()=>{
           
 
           if (event === 'Disconnected') {
-             syncInit();
+            backgroundSync();
           } else if (event === 'Connected') {
               // Do something call got connected
               // This clause will only be executed for iOS

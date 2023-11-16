@@ -5,7 +5,6 @@ import {Provider} from 'react-redux';
 import LoginScreen from './src/components/Login/LoginScreen';
 import {getData} from './src/store/storageUtil';
 
-import syncLogs from './src/utils/syncLogs';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Dashboard from './src/components/Dashboard';
@@ -23,7 +22,7 @@ import { setUserAuth } from './src/actions/authActions';
 
 const StackNavigator = createNativeStackNavigator();
 
-function App({hasGranted}) {
+function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [allPermissionsGranted, setArePermissionsGranted] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -36,7 +35,6 @@ function App({hasGranted}) {
         setIsLoggedIn(true);
         setLoading(false);
         store.dispatch(setUserAuth( userAuth.user));
-        // await syncLogs();
       } else {
         setLoading(false);
       }
