@@ -39,11 +39,21 @@ const CourseTab = (isFocused) => {
   );
 };
 
+const LogsTab = (isFocused) => {
+  return (
+    <View style={styles.tabContainer}>
+      <Ionicon name="call-outline" size={28} color={isFocused ? 'blue' : '#000'} />
+      <Text style={{ color: isFocused ? 'blue' : '#000', marginTop: 5 }}>Calls</Text>
+    </View>
+  );
+};
+
 const routeBarMapping = {
   Home: HomeTab,
   Profile: ProfileTab,
   Notifications: NoticeTab,
   Courses: CourseTab,
+  Logs: LogsTab
 };
 
 function LbmsTabBar({ state, descriptors, navigation }) {

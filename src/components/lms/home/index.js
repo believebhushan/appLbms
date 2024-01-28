@@ -17,7 +17,6 @@ const Home = () => {
         const profiles = await response.json();
         setData(profiles);
       } catch (error) {
-        console.error("Error fetching GitHub profiles:", error);
       } finally {
         setIsLoading(false);
       }
@@ -28,7 +27,7 @@ const Home = () => {
   }, []);
 
   const navigateToDetails = ({ user }) => {
-    navigation.navigate("ProfileDetails", { user });
+    navigation.navigate("ProfileWebView", { profile_url: user.html_url });
   };
 
   const renderItem = ({ item }) => (

@@ -5686,6 +5686,16 @@
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
   "version" "17.0.2"
 
+"react-native-call-log@^2.1.2":
+  "integrity" "sha512-nWHmb+QMN/AbbZFEuUGiQePssPgjQr5dibNAURDlqO4S5wuLk1XzxxsLUAVHZnB0FdJoMlajD7tUAXtaoxYwUQ=="
+  "resolved" "https://registry.npmjs.org/react-native-call-log/-/react-native-call-log-2.1.2.tgz"
+  "version" "2.1.2"
+
+"react-native-contacts@^7.0.8":
+  "integrity" "sha512-Zfkdpw1uQVRb8v1m+ogknzjyfEs9k63o2sPAYvxZ8ZJff31D45G8+uZb6VcM4tIe3ELH9EDvh93nd515kFvRYQ=="
+  "resolved" "https://registry.npmjs.org/react-native-contacts/-/react-native-contacts-7.0.8.tgz"
+  "version" "7.0.8"
+
 "react-native-gesture-handler@>= 1.0.0":
   "integrity" "sha512-6sNXtmRfYxQWgH0TjQX03QQ4UfCyM8jX1Ee1jXc3uNgefk03qapGGxZ2noXodGWKHzpsqMxB0O1lFLGew0GRrw=="
   "resolved" "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-2.13.3.tgz"
@@ -5696,6 +5706,11 @@
     "invariant" "^2.2.4"
     "lodash" "^4.17.21"
     "prop-types" "^15.7.2"
+
+"react-native-immediate-phone-call@^2.0.0":
+  "integrity" "sha512-ImE+KfiuuVS+A6BZ2jkVkJsXzvOpREh/YubdhgJ7CYdbMLbieBG56K28B+M3evMaMFzs9reGFmQpDTMTIJBjaQ=="
+  "resolved" "https://registry.npmjs.org/react-native-immediate-phone-call/-/react-native-immediate-phone-call-2.0.0.tgz"
+  "version" "2.0.0"
 
 "react-native-permissions@^3.10.0":
   "integrity" "sha512-6SB6JInfC0u54Wco8M1QsRoOGThnVjrhaks5IDWyYgwfi6JpXfTIi+F9fZZmRycyyPCgU8vGtht/5gF4VWEB/A=="
@@ -5741,7 +5756,7 @@
     "escape-string-regexp" "2.0.0"
     "invariant" "2.2.4"
 
-"react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", "react-native@>= 0.30.0", "react-native@>=0.59", "react-native@>=0.63.3", "react-native@0.72.6":
+"react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", "react-native@>= 0.30.0", "react-native@>=0.59", "react-native@>=0.63.3", "react-native@>=0.64.0", "react-native@0.72.6":
   "integrity" "sha512-RafPY2gM7mcrFySS8TL8x+TIO3q7oAlHpzEmC7Im6pmXni6n1AuufGaVh0Narbr1daxstw7yW7T9BKW5dpVc2A=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.72.6.tgz"
   "version" "0.72.6"
