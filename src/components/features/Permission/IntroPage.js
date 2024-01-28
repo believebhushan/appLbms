@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 const IntroPage = ({ setShowIntro = () => {} }) => {
   const handleButtonClick = () => {
-    console.log("startttt");
+    // console.log("startttt");
     setShowIntro(false);
   };
 

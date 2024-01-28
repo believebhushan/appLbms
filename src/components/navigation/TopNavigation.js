@@ -8,7 +8,7 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 const TopNavigation = ({navigation,route,back,options}) => {
 
     const handleNav=({name})=>{
-      console.log(route,"route");
+      // console.log(route,"route");
       // navigation.replace(name);
     }
   return (

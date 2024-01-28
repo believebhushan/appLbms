@@ -18,7 +18,7 @@ const getCalls = async ({filters: defaultFilters})=>{
     const CALL_LIST="call_list";
     const CALL_LIST_UPDATED_TILL = "call_list_updated_till";
     let lastUpdatedTill = await getData(CALL_LIST_UPDATED_TILL);
-    console.log(lastUpdatedTill,"lastUpdatedTill");
+    // console.log(lastUpdatedTill,"lastUpdatedTill");
     if(lastUpdatedTill==""){
       let data = await CallLogs.loadAll();
       const groupedDetails = groupedcalls({data: data});
@@ -32,7 +32,7 @@ const getCalls = async ({filters: defaultFilters})=>{
         const lastUpdatedTillTimeStamp = parseInt(lastUpdatedTill);
         let data = await CallLogs.load(-1,{minTimestamp:lastUpdatedTillTimeStamp+1});
         const currentDetails = await getData(CALL_LIST) || [];
-        console.log(currentDetails.length,"vgh")
+        // console.log(currentDetails.length,"vgh")
         let groupedDetailsNew = [];
         (currentDetails || []).forEach((ele)=>{
             groupedDetailsNew.push(ele);

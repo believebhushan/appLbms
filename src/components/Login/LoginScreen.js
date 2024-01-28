@@ -52,7 +52,7 @@ const LoginScreen = () => {
       setLoading(false);
 
         const userData = await response.json();
-        console.log(userData,"userData")
+        // console.log(userData,"userData")
         if(userData?.status && userData.user){
           await loginUser(userData.user)
           navigation.replace('Dashboard');

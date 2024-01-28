@@ -59,7 +59,7 @@ const syncLogs = async (fromEvent)=>{
             })
         });
         payload.logs = logs;
-        console.log(c.length,"here");
+        // console.log(c.length,"here");
 
         // console.log(userDetails.user.email,payload,"nbmbnm");
         if(logs.length == 0){
@@ -77,7 +77,7 @@ const syncLogs = async (fromEvent)=>{
           });
           const data = await response.json();
           if(data?.data?.id){
-            console.log("found",data?.data.id,data)
+            // console.log("found",data?.data.id,data)
             await storeData("lastSynced",data.data.last_synced);
             if(fromEvent){
                 // ReactNativeForegroundService.stopAll();
@@ -86,7 +86,7 @@ const syncLogs = async (fromEvent)=>{
           hasProcessed = true;
     }
     catch(err){
-        console.log(err,"error updateCallLogs.. .");
+        // console.log(err,"error updateCallLogs.. .");
         hasProcessed = true;
     }
     if(hasProcessed){

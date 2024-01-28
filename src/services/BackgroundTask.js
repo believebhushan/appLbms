@@ -28,7 +28,7 @@ const veryIntensiveTask = async (taskDataArguments) => {
     const { delay } = taskDataArguments;
     await new Promise( async (resolve) => {
         for (let i = 0; BackgroundService.isRunning(); i++) {
-            console.log(i);
+            // console.log(i);
             await sleep(delay);
         }
     });
@@ -50,11 +50,11 @@ const options = {
     delay: 20000,
 };
 const initProcess = async ()=>{
-    console.log("starting...");
+    // console.log("starting...");
     await BackgroundService.start(veryIntensiveTask, options);
     await BackgroundService.updateNotification({taskDesc: 'New ExampleTask description '}); // Only Android, iOS will ignore this call
 
-    console.log("stoping the service...")
+    // console.log("stoping the service...")
     await BackgroundService.stop();
 }
 

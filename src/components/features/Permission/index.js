@@ -80,14 +80,14 @@ const PermissionScreen = () => {
       const result = await request(permission);
 
       if (result === RESULTS.GRANTED) {
-        console.log(`${permission} granted`);
+        // console.log(`${permission} granted`);
         // Update the status when permission is granted
         setPermissionStatus(prevStatus => ({
           ...prevStatus,
           [permission]: true,
         }));
       } else {
-        console.log(`${permission} not granted`);
+        // console.log(`${permission} not granted`);
         showPermissionAlert(permission);
       }
     } catch (err) {

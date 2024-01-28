@@ -10,7 +10,7 @@ const startService = async ()=>{
    }
     let callDetector = new CallDetectorManager(
         async (event, number) => {
-          console.log('event -> ', event + (number ? ' - ' + number : ''));
+          // console.log('event -> ', event + (number ? ' - ' + number : ''));
           ToastAndroid.showWithGravityAndOffset(
             'A wild toast appeared! '+event + (number ? ' - ' + number : ''),
             ToastAndroid.LONG,
@@ -53,7 +53,7 @@ const startService = async ()=>{
           // If permission got denied [ANDROID]
           // Only If you want to read incoming number
           // Default: console.error
-          console.log('Permission Denied by User');
+          // console.log('Permission Denied by User');
         },
         {
           title: 'Phone State Permission',

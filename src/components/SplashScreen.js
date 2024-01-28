@@ -9,7 +9,8 @@ const SplashScreen = () => {
   return (
     <View style={styles.container}>
       <Image source={require('../images/logo.png')} style={styles.logo} />
-      <Text style={styles.appName}>Kall App</Text>
+      <Text style={styles.appName}>K-Education</Text>
+      <Text style={styles.slogan}>Dare to be free, dare to go as far as your thought leads, and dare to carry that out in your life.</Text>
     </View>
   );
 };
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#3498db', // Change to your preferred background color
+    backgroundColor: 'white', // Change to your preferred background color
   },
   logo: {
     width: 150,
@@ -28,8 +29,17 @@ const styles = StyleSheet.create({
   },
   appName: {
     fontSize: 24,
-    color: '#fff', // Change to your preferred text color
+    color: '#232323', // Change to your preferred text color
     marginTop: 16,
+    fontWeight: 'bold',
+  },
+  slogan: {
+    fontSize: 16,
+    color: '#343434',
+    marginTop: 8,
+    padding:10,
+    fontStyle: 'italic',
+    textAlign:'center'
   },
 });
 

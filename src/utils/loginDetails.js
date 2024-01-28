@@ -4,7 +4,7 @@ import { storeData } from "../store/storageUtil";
 
 
 const loginUser =async (user)=>{
-    console.log("Meeeeee");
+    // console.log("Meeeeee");
     const CALL_LIST_UPDATED_TILL = "call_list_updated_till";
 
     await storeData('userDetails', {user: user});

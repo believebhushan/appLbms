@@ -24,7 +24,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       const userAuth = await getData('userDetails');
-      console.log(userAuth, 'userAuth ');
+      // console.log(userAuth, 'userAuth ');
       if (userAuth && userAuth.user) {
         setIsLoggedIn(true);
       }

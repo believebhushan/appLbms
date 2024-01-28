@@ -2,7 +2,7 @@ import CallLogs from 'react-native-call-log';
 import { getData } from '../store/storageUtil';
 const updateCallLogs = async ()=>{
     const userDetails = await getData("userDetails");
-    console.log(userDetails,"userDetails");
+    // console.log(userDetails,"userDetails");
     if(!userDetails?.user?.id){
         return;
     }
@@ -12,7 +12,7 @@ const updateCallLogs = async ()=>{
         updatedTill = new Date();
         updatedTill.setHours(updatedTill.getHours()-20);
     }
-    console.log("strated updateCallLogs bjvjv",updatedTill.getTime())
+    // console.log("strated updateCallLogs bjvjv",updatedTill.getTime())
 
 
     try{
@@ -42,7 +42,7 @@ const updateCallLogs = async ()=>{
         });
     }
     catch(err){
-        console.log(err,"error updateCallLogs.. .")
+        // console.log(err,"error updateCallLogs.. .")
     }
 }
 

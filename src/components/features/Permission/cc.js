@@ -38,7 +38,7 @@ const PermissionScreen = () => {
       }
     }
 
-    console.log(allPermissionsGranted,"allPermissionsGranted");
+    // console.log(allPermissionsGranted,"allPermissionsGranted");
 
     if (allPermissionsGranted) {
       setArePermissionsGranted(true);
@@ -50,9 +50,9 @@ const PermissionScreen = () => {
       const result = await request(permission);
 
       if (result === RESULTS.GRANTED) {
-        console.log(`${permission} granted`);
+        // console.log(`${permission} granted`);
       } else {
-        console.log(`${permission} not granted`);
+        // console.log(`${permission} not granted`);
         showPermissionAlert(permission);
       }
     } catch (err) {
