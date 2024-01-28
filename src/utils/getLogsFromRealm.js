@@ -20,7 +20,7 @@ const getLogsFromRealm = async ({filters: defaultFilters})=>{
     const CALL_LIST_UPDATED_TILL = "call_list_realms_synced_at";
     let lastUpdatedTill = await getData(CALL_LIST_UPDATED_TILL);
     if(lastUpdatedTill==""){
-      let data = await CallLogs.loadAll();
+      let data = await CallLogs.load(20);
       createLogsInRealms([...data]);
       const groupedDetails = groupedcalls({data: getAllLogs()});
 

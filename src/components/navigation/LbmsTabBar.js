@@ -1,36 +1,57 @@
-import {View, TouchableOpacity, StyleSheet} from 'react-native';
+import React from 'react';
+import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 const HomeTab = (isFocused) => {
-  return <AntDesignIcon name="home" size={28} color={isFocused? 'blue': '#000'} />;
+  return (
+    <View style={styles.tabContainer}>
+      <AntDesignIcon name="home" size={28} color={isFocused ? 'blue' : '#000'} />
+      <Text style={{ color: isFocused ? 'blue' : '#000', marginTop: 5 }}>Home</Text>
+    </View>
+  );
 };
 
-const ContactListTab = (isFocused) => {
-  return <AntDesignIcon name="contacts" size={28}  color={isFocused? 'blue': '#000'} />;
+const ProfileTab = (isFocused) => {
+  return (
+    <View style={styles.tabContainer}>
+      <AntDesignIcon name="user" size={28} color={isFocused ? 'blue' : '#000'} />
+      <Text style={{ color: isFocused ? 'blue' : '#000', marginTop: 5 }}>Profile</Text>
+    </View>
+  );
 };
 
-const CallAnalyseTab = (isFocused) => {
-  return <Ionicon name="analytics" size={28}  color={isFocused? 'blue': '#000'} />;
+const NoticeTab = (isFocused) => {
+  return (
+    <View style={styles.tabContainer}>
+      <AntDesignIcon name="notification" size={28} color={isFocused ? 'blue' : '#000'} />
+      <Text style={{ color: isFocused ? 'blue' : '#000', marginTop: 5 }}>Notifications</Text>
+    </View>
+  );
 };
 
-const CallListTab = (isFocused) => {
-  return <Ionicon name="call-outline" size={28}  color={isFocused? 'blue': '#000'} />;
+const CourseTab = (isFocused) => {
+  return (
+    <View style={styles.tabContainer}>
+      <AntDesignIcon name="book" size={28} color={isFocused ? 'blue' : '#000'} />
+      <Text style={{ color: isFocused ? 'blue' : '#000', marginTop: 5 }}>Courses</Text>
+    </View>
+  );
 };
 
 const routeBarMapping = {
   Home: HomeTab,
-  ContactDetails: ContactListTab,
-  Messages: CallAnalyseTab,
-  CallList: CallListTab,
+  Profile: ProfileTab,
+  Notifications: NoticeTab,
+  Courses: CourseTab,
 };
 
-function LbmsTabBar({state, descriptors, navigation}) {
-    const updateRoutes = state.routes.filter(ele => ele.name !== 'Login');
+function LbmsTabBar({ state, descriptors, navigation }) {
+  const updateRoutes = state.routes.filter(ele => ele.name !== 'Login');
   return (
     <View style={styles.navigation}>
       {updateRoutes.map((route, index) => {
-        const {options} = descriptors[route.key];
+        const { options } = descriptors[route.key];
         const isFocused = state.routes[state.index].name === route.name;
 
         const onPress = () => {
@@ -59,8 +80,9 @@ function LbmsTabBar({state, descriptors, navigation}) {
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{...styles.navItem}}
-            key={index}>
+            style={styles.tabItem}
+            key={index}
+          >
             {routeBarMapping[route?.name](isFocused)}
           </TouchableOpacity>
         );
@@ -70,26 +92,21 @@ function LbmsTabBar({state, descriptors, navigation}) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    padding: 10,
-    overflow: 'scroll',
-  },
-  navItem: {
-    borderRightWidth: 1,
-    flex:1,
-    alignItems:'center',
-    padding:5
-  },
   navigation: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10,
-    borderCurve: 'continuous',
+    backgroundColor: '#fff', // Background color for the bottom bar
     borderRadius: 10,
+    elevation: 5, // Add elevation for a subtle shadow
   },
-  navOption: {
+  tabItem: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 10,
+  },
+  tabContainer: {
+    alignItems: 'center',
   },
 });
 

@@ -1,6 +1,6 @@
 import CallLogs from 'react-native-call-log';
 import { getData,storeData } from '../store/storageUtil';
-import ReactNativeForegroundService from '@supersami/rn-foreground-service';
+// import ReactNativeForegroundService from '@supersami/rn-foreground-service';
 import displayNotification from '../helpers/notifications/sendNotifications';
 import notifee from '@notifee/react-native';
 import checker from '../components/features/Permission/checker';
@@ -80,7 +80,7 @@ const syncLogs = async (fromEvent)=>{
             console.log("found",data?.data.id,data)
             await storeData("lastSynced",data.data.last_synced);
             if(fromEvent){
-                ReactNativeForegroundService.stopAll();
+                // ReactNativeForegroundService.stopAll();
             }
           }
           hasProcessed = true;

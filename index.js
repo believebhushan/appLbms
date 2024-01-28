@@ -5,13 +5,13 @@
 import {AppRegistry} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
-import startService from './src/services/CallListen'
-import ReactNativeForegroundService from "@supersami/rn-foreground-service";
+// import startService from './src/services/CallListen'
+// import ReactNativeForegroundService from "@supersami/rn-foreground-service";
 
 
 AppRegistry.registerComponent(appName, () => App);
-ReactNativeForegroundService.register();
-startService();
+// ReactNativeForegroundService.register();
+// startService();
 
 
 // ReactNativeForegroundService.start({

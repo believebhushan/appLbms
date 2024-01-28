@@ -1,26 +1,28 @@
 
-import React, { useEffect } from "react";
+import React from "react";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import MainAppScreen from "./features/Home/MainAppScreen";
-import CallList from "./features/CallList";
-import CallAnalyse from "./features/CallAnalyse";
-import ContactList from "./features/Contacts";
+
 import LbmsTabBar from "./navigation/LbmsTabBar";
-import backgroundSync from "../services/backgroundSync";
+import Home from "./lms/home";
+import Courses from "./lms/courses";
+import Notices from "./lms/notifications";
+import Profile from "./lms/profile";
+import HomeStack from "./lms/stacks/HomeStack";
 
 const Tab = createBottomTabNavigator();
 
-const Dashboard=()=>{
 
-    useEffect(()=>{
-        backgroundSync();
-    },[])
+const options =
+{
+    headerShown: false
+}
+const Dashboard=()=>{
     return(
-            <Tab.Navigator initialRouteName='CallList' tabBar={props => <LbmsTabBar {...props} />}>
-                <Tab.Screen name="Home" component={MainAppScreen} options={{headerShown:true, headerTitle:'Dashboard'}} />
-                <Tab.Screen name="CallList" component={CallList} />
-                {/* <Tab.Screen name="Messages" component={CallAnalyse} /> */}
-                <Tab.Screen name="ContactDetails" component={ContactList} />
+            <Tab.Navigator initialRouteName='Home' tabBar={props => <LbmsTabBar {...props} />}>
+                <Tab.Screen name="Home" component={HomeStack} options={options} />
+                <Tab.Screen name="Courses" component={Courses} options={options}/>
+                <Tab.Screen name="Notifications" component={Notices} options={options}/>
+                <Tab.Screen name="Profile" component={Profile}options={options} />
             </Tab.Navigator>
     )
 }

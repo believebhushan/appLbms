@@ -1,28 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity, Linking } from "react-native";
+import { View, ActivityIndicator, StyleSheet,TouchableOpacity,Image,Text } from "react-native";
 import { FlashList } from "@shopify/flash-list";
+import { useNavigation } from "@react-navigation/native";
 
-const CallList = () => {
+const Home = () => {
+  const navigation = useNavigation();
   const [data, setData] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Simulate delay to resemble API call
         // Fetch GitHub profiles data (replace 'your-username' with your GitHub username)
         const response = await fetch("https://api.github.com/users?per_page=200");
         const profiles = await response.json();
         setData(profiles);
       } catch (error) {
         console.error("Error fetching GitHub profiles:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
+    // Fetch data after setting placeholder data
     fetchData();
   }, []);
 
+  const navigateToDetails = ({ user }) => {
+    navigation.navigate("ProfileDetails", { user });
+  };
+
   const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => setSelectedUser(item)} style={styles.card}>
+    <TouchableOpacity onPress={() => navigateToDetails({ user: item })} style={styles.card}>
       <Image source={{ uri: item.avatar_url }} style={styles.avatar} />
       <View>
         <Text style={styles.title}>Username: {item.login}</Text>
@@ -36,39 +46,18 @@ const CallList = () => {
     </TouchableOpacity>
   );
 
-  const openProfileUrl = (url) => {
-    Linking.openURL(url);
-  };
-
-  const renderDetail = () => {
-    if (selectedUser) {
-      return (
-        <View style={styles.detailContainer}>
-          <Image source={{ uri: selectedUser.avatar_url }} style={styles.avatar} />
-          <Text style={styles.title}>Username: {selectedUser.login}</Text>
-          <Text style={styles.text}>ID: {selectedUser.id}</Text>
-          <Text style={styles.text}>Node ID: {selectedUser.node_id}</Text>
-          <Text style={styles.text}>Type: {selectedUser.type}</Text>
-          <Text style={styles.text}>Site Admin: {selectedUser.site_admin ? 'Yes' : 'No'}</Text>
-          <Text style={styles.url}>Profile URL: {selectedUser.html_url}</Text>
-          <TouchableOpacity onPress={() => setSelectedUser(null)} style={styles.closeButton}>
-            <Text style={styles.closeButtonText}>Close</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    }
-
-    return null;
-  };
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0366d6" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
-      <FlashList
-        data={data}
-        renderItem={renderItem}
-        estimatedItemSize={200}
-      />
-      {renderDetail()}
+      <Text style={styles.heading}>Profiles</Text>
+      <FlashList data={data} renderItem={renderItem} estimatedItemSize={200} />
     </View>
   );
 };
@@ -101,22 +90,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#0366d6", // GitHub link color
   },
-  detailContainer: {
+  loadingContainer: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
-    padding: 16,
+    alignItems: "center",
   },
-  closeButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: "#0366d6",
-    borderRadius: 5,
-  },
-  closeButtonText: {
-    color: "white",
-    fontSize: 16,
+  heading: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+    marginLeft:20,
+    paddingLeft:10,
+    marginTop:10
   },
 });
 
-export default CallList;
+export default Home;
