@@ -18,7 +18,7 @@ const IntroPage = ({ setShowIntro = () => {} }) => {
 
       {/* Text */}
       <Text style={styles.text}>
-        Welcome to KallApp! This is an amazing app that does fantastic things.
+        Welcome to lms! This is an amazing app that does fantastic things.
         Enjoy the experience!
       </Text>
 
