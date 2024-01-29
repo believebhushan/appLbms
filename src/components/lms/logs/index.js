@@ -7,8 +7,9 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { FlashList } from '@shopify/flash-list';
+import {useNavigation} from '@react-navigation/native';
+import {FlashList} from '@shopify/flash-list';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 
 const Logs = () => {
   const [data, setData] = useState([]);
@@ -34,8 +35,11 @@ const Logs = () => {
   }, []);
 
   const navigateToContacts = () => {
-    // Navigation logic to the Contacts screen
     navigation.navigate('LogsContactsList');
+  };
+
+  const goToDailer = () => {
+    navigation.navigate('LogsContactsList', {openDailer: true});
   };
 
   const renderLogItem = ({item}) => (
@@ -58,17 +62,36 @@ const Logs = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={navigateToContacts} style={styles.searchButton}>
-        <Text style={styles.searchButtonText}>Search People</Text>
+      <TouchableOpacity
+        onPress={navigateToContacts}
+        style={styles.searchButton}>
+        <View style={styles.searchButtonText}>
+          <Text><Ionicon name="search" size={24} color="#232323"></Ionicon></Text>
+          <Text style={{flex:1,marginLeft: 20,marginTop: 2}}> Search contacts by name and phone</Text>
+        </View>
       </TouchableOpacity>
       {data.length > 0 ? (
         <FlashList
           data={data}
           renderItem={renderLogItem}
-          estimatedItemSize={200}        />
+          estimatedItemSize={200}
+        />
       ) : (
         <Text>No call logs available</Text>
       )}
+
+      <TouchableOpacity
+        style={styles.floatingButton}
+        onPress={() => goToDailer()}>
+        <Text style={styles.buttonText}>
+          <Ionicon
+            name="keypad"
+            size={30}
+            color="#fff"
+            style={styles.backIcon}
+          />
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -114,15 +137,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   searchButton: {
-    backgroundColor: "#0366d6",
+    backgroundColor: '#fff',
     padding: 12,
     borderRadius: 8,
     alignItems: 'center',
     marginBottom: 16,
   },
   searchButtonText: {
-    color: "#fff",
+    color: '#232323',
     fontSize: 16,
+    display: 'flex',
+    justifyContent:'center',
+    flexDirection: 'row'
+  },
+  floatingButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: 'blue',
+    padding: 15,
+    borderRadius: 30,
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+  },
+  bottomModal: {
+    justifyContent: 'flex-end',
+    margin: 0,
   },
 });
 
