@@ -19,11 +19,11 @@ const options =
 const Dashboard=()=>{
     return(
             <Tab.Navigator initialRouteName='Logs' tabBar={props => <LbmsTabBar {...props} />}>
+               <Tab.Screen name="Logs" component={LogsStack}options={options} />
                 <Tab.Screen name="Home" component={HomeStack} options={options} />
                 <Tab.Screen name="Courses" component={Courses} options={options}/>
                 <Tab.Screen name="Notifications" component={Notices} options={options}/>
                 <Tab.Screen name="Profile" component={Profile}options={options} />
-                <Tab.Screen name="Logs" component={LogsStack}options={options} />
             </Tab.Navigator>
     )
 }

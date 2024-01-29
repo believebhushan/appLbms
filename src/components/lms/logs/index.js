@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {getLogs} from '../lib/callLogs';
+import {getLogs, groupAndReturn} from '../lib/callLogs';
 import {
   Text,
   View,
@@ -21,9 +21,10 @@ const Logs = () => {
       try {
         const logsData = await getLogs({
           n: -1,
-          filter: {minTimestamp: Date.now() - 24 * 3600 * 1000},
+          filter: {minTimestamp: Date.now() - 24 * 3600 * 1000*30},
         });
-        setData(logsData);
+        const groupedData = groupAndReturn(logsData);
+        setData(groupedData);
         setIsLoading(false);
       } catch (error) {
         // console.error("Error fetching call logs:", error);
