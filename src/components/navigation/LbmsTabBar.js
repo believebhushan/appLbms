@@ -6,8 +6,8 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 const HomeTab = (isFocused) => {
   return (
     <View style={styles.tabContainer}>
-      <AntDesignIcon name="home" size={28} color={isFocused ? 'blue' : '#000'} />
-      <Text style={{ color: isFocused ? 'blue' : '#000', marginTop: 5 }}>Home</Text>
+      <AntDesignIcon name="home" size={28} color={isFocused ? '#ff9933' : '#000'} />
+      <Text style={{ color: isFocused ? '#ff9933' : '#000', marginTop: 5 }}>Home</Text>
     </View>
   );
 };
@@ -15,8 +15,8 @@ const HomeTab = (isFocused) => {
 const ProfileTab = (isFocused) => {
   return (
     <View style={styles.tabContainer}>
-      <AntDesignIcon name="user" size={28} color={isFocused ? 'blue' : '#000'} />
-      <Text style={{ color: isFocused ? 'blue' : '#000', marginTop: 5 }}>Profile</Text>
+      <AntDesignIcon name="user" size={28} color={isFocused ? '#ff9933' : '#000'} />
+      <Text style={{ color: isFocused ? '#ff9933' : '#000', marginTop: 5 }}>Profile</Text>
     </View>
   );
 };
@@ -24,8 +24,8 @@ const ProfileTab = (isFocused) => {
 const NoticeTab = (isFocused) => {
   return (
     <View style={styles.tabContainer}>
-      <AntDesignIcon name="notification" size={28} color={isFocused ? 'blue' : '#000'} />
-      <Text style={{ color: isFocused ? 'blue' : '#000', marginTop: 5 }}>Notifications</Text>
+      <AntDesignIcon name="notification" size={28} color={isFocused ? '#ff9933' : '#000'} />
+      <Text style={{ color: isFocused ? '#ff9933' : '#000', marginTop: 5 }}>Notifications</Text>
     </View>
   );
 };
@@ -33,8 +33,8 @@ const NoticeTab = (isFocused) => {
 const CourseTab = (isFocused) => {
   return (
     <View style={styles.tabContainer}>
-      <AntDesignIcon name="book" size={28} color={isFocused ? 'blue' : '#000'} />
-      <Text style={{ color: isFocused ? 'blue' : '#000', marginTop: 5 }}>Courses</Text>
+      <AntDesignIcon name="book" size={28} color={isFocused ? '#ff9933' : '#000'} />
+      <Text style={{ color: isFocused ? '#ff9933' : '#000', marginTop: 5 }}>Courses</Text>
     </View>
   );
 };
@@ -42,8 +42,8 @@ const CourseTab = (isFocused) => {
 const LogsTab = (isFocused) => {
   return (
     <View style={styles.tabContainer}>
-      <Ionicon name="call-outline" size={28} color={isFocused ? 'blue' : '#000'} />
-      <Text style={{ color: isFocused ? 'blue' : '#000', marginTop: 5 }}>Calls</Text>
+      <Ionicon name="call-outline" size={28} color={isFocused ? '#ff9933' : '#000'} />
+      <Text style={{ color: isFocused ? '#ff9933' : '#000', marginTop: 5 }}>Calls</Text>
     </View>
   );
 };

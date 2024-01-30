@@ -133,21 +133,8 @@ public class MyModule extends ReactContextBaseJavaModule {
         }
     }
 
-    private void updateCallLog(WritableMap callLog, Cursor cursor) {
-        callLog.putString("phoneNumber", cursor.getString(cursor.getColumnIndex(Calls.NUMBER)));
-        callLog.putInt("duration", cursor.getInt(cursor.getColumnIndex(Calls.DURATION)));
-        callLog.putString("name", cursor.getString(cursor.getColumnIndex(Calls.CACHED_NAME)));
-        callLog.putString("timestamp", cursor.getString(cursor.getColumnIndex(Calls.DATE)));
-        callLog.putString("type", resolveCallType(cursor.getInt(cursor.getColumnIndex(Calls.TYPE))));
-        callLog.putInt("rawType", cursor.getInt(cursor.getColumnIndex(Calls.TYPE)));
-        DateFormat df = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.MEDIUM, SimpleDateFormat.MEDIUM);
-        callLog.putString("dateTime", df.format(new Date(Long.valueOf(callLog.getString("timestamp")))));
-    }
 
-    private String cleanPhoneNumber(String phoneNumber) {
-        // Remove whitespaces and other characters
-        return phoneNumber.replaceAll("\\s", "");
-    }
+
 
     public static String[] toStringArray(JSONArray array) {
         if (array == null)

@@ -26,17 +26,16 @@ const Profile = ({navigation}) => {
   useEffect(() => {
     async function doer() {
       try {
-        const twoHoursAgoTimestamp = Date.now() - 1000 * 3600 * 2;
-        const twoHoursAgoDate = new Date(twoHoursAgoTimestamp);
-        const whatis = await MyModule.loadWithFilter(
-          100,
-          {
-            minTimestamp: undefined,
-            maxTimestamp: undefined,
-            phoneNumbers: JSON.stringify([])
-          }
-        );
-        console.log(whatis[0], 'whatis');
+        // const twoHoursAgoTimestamp = Date.now() - 1000 * 3600 * 2;
+        // const twoHoursAgoDate = new Date(twoHoursAgoTimestamp);
+        // const whatis = await MyModule.loadWithFilter(
+        //   100,
+        //   {
+        //     minTimestamp: undefined,
+        //     maxTimestamp: undefined,
+        //     phoneNumbers: JSON.stringify([])
+        //   }
+        // );
       } catch (error) {
         console.log(error, 'error');
       }

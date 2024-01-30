@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
   Image,
 } from 'react-native';
 import Contacts from 'react-native-contacts';
@@ -13,10 +12,9 @@ import {FlashList} from '@shopify/flash-list';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
-import  Modal  from 'react-native-modal';
+import Modal from 'react-native-modal';
 import Dialer from './Dialer';
 import UserAvatar from 'react-native-user-avatar';
-
 
 const call = number => {
   const cleanedNum = number.replace(/\s/g, '');
@@ -29,7 +27,9 @@ const call = number => {
 const ContactsList = ({route}) => {
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState(null);
-  const [modalVisible,setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(
+    route?.params?.openDailer == true,
+  );
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -49,13 +49,11 @@ const ContactsList = ({route}) => {
     fetchData();
   }, [searchQuery]);
 
-
-  useEffect(()=>{
-    if(route?.params?.openDailer){
-      openModal();
-    }
-  },[])
-
+  // useEffect(()=>{
+  //   if(route?.params?.openDailer){
+  //     openModal();
+  //   }
+  // },[])
 
   const openModal = () => {
     setModalVisible(true);
@@ -65,56 +63,70 @@ const ContactsList = ({route}) => {
     setModalVisible(false);
   };
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => call(item.phoneNumbers[0]?.number)}>
-      <View style={styles.contactItem}>
-        <View style={styles.contactRow}>
-          <View style={styles.contactDetails}>
-            <View style={styles.contactInfo}>
-              {item.thumbnailPath.length > 0 ? (
-                <Image
-                  source={{ uri: item.thumbnailPath }}
-                  style={styles.contactImage}
-                />
-              ) : (
-                <UserAvatar  name={item.givenName[0]} style={styles.avatar} />
-              )}
-              <View>
-                <Text style={styles.contactName}>
-                  {item.givenName} {item.familyName}
-                </Text>
-                <Text style={styles.contactNumber}>
-                  {item.phoneNumbers[0]?.number}
-                </Text>
-              </View>
+  const renderItem = ({item}) => (
+    <View style={styles.contactItem}>
+      <View style={styles.contactRow}>
+        <View style={styles.contactDetails}>
+          <View style={styles.contactInfo}>
+            {item.thumbnailPath.length > 0 ? (
+              <Image
+                source={{uri: item.thumbnailPath}}
+                style={styles.contactImage}
+              />
+            ) : (
+              <UserAvatar name={item.givenName[0]} style={styles.avatar} />
+            )}
+            <View>
+              <Text style={styles.contactName}>
+                {item.givenName} {item.familyName}
+              </Text>
+              <Text style={styles.contactNumber}>
+                {item.phoneNumbers[0]?.number}
+              </Text>
             </View>
           </View>
         </View>
       </View>
-    </TouchableOpacity>
-  );
-  
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.searchContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('LogsHome')}>
+      <View>
+        <TouchableOpacity onPress={() => call(item.phoneNumbers[0]?.number)}>
           <Ionicon
-            name="arrow-back"
+            name="call-outline"
             size={24}
-            color="#232323"
+            color="#ff9933"
             style={styles.backIcon}
           />
         </TouchableOpacity>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search contacts by name or number"
-          value={searchQuery}
-          onChangeText={text => setSearchQuery(text)}
-          autoFocus={!(route?.params?.openDailer == true)}
-        />
       </View>
-      <Text style={{margin: 10}}>{searchQuery ? "All contacts" : "Suggested"}</Text>
+    </View>
+  );
+
+  return (
+    <View style={styles.container}>
+      {!modalVisible ? (
+        <View style={styles.searchContainer}>
+          <TouchableOpacity onPress={() => navigation.navigate('LogsHome')}>
+            <Ionicon
+              name="arrow-back"
+              size={24}
+              color="#232323"
+              style={styles.backIcon}
+            />
+          </TouchableOpacity>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search contacts by name or number"
+            value={searchQuery}
+            onChangeText={text => setSearchQuery(text)}
+            autoFocus={!(route?.params?.openDailer == true)}
+          />
+        </View>
+      ) : (
+        <></>
+      )}
+
+      <Text style={{margin: 10}}>
+        {searchQuery ? 'All contacts' : 'Suggested'}
+      </Text>
       {data.length > 0 ? (
         <FlashList
           data={data}
@@ -129,13 +141,26 @@ const ContactsList = ({route}) => {
         isVisible={modalVisible}
         onBackdropPress={closeModal}
         onBackButtonPress={closeModal}
-        backdropOpacity={0.1}
+        backdropOpacity={0}
+        hideModalContentWhileAnimating
         style={styles.bottomModal}>
-        <KeyboardAvoidingView behavior="padding" style={styles.modalContent}>
-          <Text style={styles.modalHeaderText}>Enter Phone Number</Text>
-           <Dialer setSearchQuery = {setSearchQuery} searchQuery={searchQuery}></Dialer>
-        </KeyboardAvoidingView>
+        <Dialer
+          setSearchQuery={setSearchQuery}
+          searchQuery={searchQuery}></Dialer>
       </Modal>
+
+      <TouchableOpacity
+        style={styles.floatingButton}
+        onPress={() => setModalVisible(true)}>
+        <Text style={styles.buttonText}>
+          <Ionicon
+            name="keypad"
+            size={30}
+            color="#fff"
+            style={styles.backIcon}
+          />
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -147,19 +172,22 @@ const styles = StyleSheet.create({
     display: 'flex',
     backgroundColor: '#fff',
     marginBottom: 20,
-    borderRadius: 10
+    borderRadius: 10,
   },
   backIcon: {
     marginRight: 10,
     marginTop: 10,
-    marginLeft: 10
+    marginLeft: 10,
   },
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#fff"
+    backgroundColor: '#fff',
   },
   contactItem: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
     backgroundColor: '#fff',
     padding: 16,
     borderRadius: 8,
@@ -219,7 +247,19 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     backgroundColor: 'gray', // Placeholder color
     marginRight: 12,
-  }
+  },
+  floatingButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: '#FF9933',
+    padding: 15,
+    borderRadius: 30,
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+  },
 });
 
 export default ContactsList;

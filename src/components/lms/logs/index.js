@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {getLogs, groupAndReturn} from '../lib/callLogs';
+import {getLogs, groupAndReturn, formatTimeDifference} from '../lib/callLogs';
 import {
   Text,
   View,
@@ -10,6 +10,8 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {FlashList} from '@shopify/flash-list';
 import Ionicon from 'react-native-vector-icons/Ionicons';
+import UserAvatar from 'react-native-user-avatar';
+import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 
 const Logs = () => {
   const [data, setData] = useState([]);
@@ -21,10 +23,14 @@ const Logs = () => {
       try {
         const logsData = await getLogs({
           n: -1,
-          filter: {minTimestamp: Date.now() - 24 * 3600 * 1000*1},
+          filter: {minTimestamp: Date.now() - 24 * 3600 * 1000 * 20},
         });
         const groupedData = groupAndReturn(logsData);
-        setData(groupedData);
+        const updatedItems = groupedData.map(item => {
+          const formattedTimeDifference = formatTimeDifference(item.timestamp);
+          return {...item, timeDifference: formattedTimeDifference};
+        });
+        setData(updatedItems);
         setIsLoading(false);
       } catch (error) {
         // console.error("Error fetching call logs:", error);
@@ -43,15 +49,58 @@ const Logs = () => {
     navigation.navigate('LogsContactsList', {openDailer: true});
   };
 
-  const renderLogItem = ({item}) => (
-    <View style={styles.logItem}>
-      <Text style={styles.logName}>{item.name}</Text>
-      <Text style={styles.logNumber}>{item.phoneNumber}</Text>
-      <Text style={styles.logDateTime}>{item.dateTime}</Text>
-      <Text style={styles.logType}>{item.type}</Text>
-      <Text style={styles.logDuration}>Duration: {item.duration} seconds</Text>
+  const call = number => {
+    const cleanedNum = number.replace(/\s/g, '');
+    const dialableNum = cleanedNum.slice(
+      cleanedNum?.length - 10,
+      cleanedNum?.length,
+    );
+    RNImmediatePhoneCall.immediatePhoneCall('+91' + dialableNum);
+  };
+
+  const renderItem = ({item}) => (
+    <View style={styles.contactItem}>
+      <View>
+        <View>
+          <View style={styles.contactInfo}>
+            <UserAvatar
+              name={item.name || item.phoneNumber}
+              style={styles.avatar}
+            />
+            <View>
+              <Text style={styles.contactName}>
+                {item.name || item.phoneNumber}
+              </Text>
+              <Text style={styles.contactNumber}>{item.timeDifference}</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View>
+        <TouchableOpacity
+          onPress={() => {
+            call(item.phoneNumber);
+          }}>
+          <Ionicon
+            name="call-outline"
+            size={24}
+            color="#ff9933"
+            style={styles.backIcon}
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
+
+  // const renderLogItem = ({item}) => (
+  //   <View style={styles.logItem}>
+  //     <Text style={styles.logName}>{item.name}</Text>
+  //     <Text style={styles.logNumber}>{item.phoneNumber}</Text>
+  //     <Text style={styles.logDateTime}>{item.dateTime}</Text>
+  //     <Text style={styles.logType}>{item.type}</Text>
+  //     <Text style={styles.logDuration}>Duration: {item.duration} seconds</Text>
+  //   </View>
+  // );
 
   if (isLoading) {
     return (
@@ -67,14 +116,20 @@ const Logs = () => {
         onPress={navigateToContacts}
         style={styles.searchButton}>
         <View style={styles.searchButtonText}>
-          <Text><Ionicon name="search" size={24} color="#232323"></Ionicon></Text>
-          <Text style={{flex:1,marginLeft: 20,marginTop: 2}}> Search contacts by name and phone</Text>
+          <Text>
+            <Ionicon name="search" size={24} color="#232323"></Ionicon>
+          </Text>
+          <Text style={{flex: 1, marginLeft: 20, marginTop: 2}}>
+            {' '}
+            Search contacts by name and phone
+          </Text>
         </View>
       </TouchableOpacity>
+
       {data.length > 0 ? (
         <FlashList
           data={data}
-          renderItem={renderLogItem}
+          renderItem={renderItem}
           estimatedItemSize={200}
         />
       ) : (
@@ -101,7 +156,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#fff"
+    backgroundColor: '#fff',
   },
   logItem: {
     backgroundColor: '#fff',
@@ -149,14 +204,14 @@ const styles = StyleSheet.create({
     color: '#232323',
     fontSize: 16,
     display: 'flex',
-    justifyContent:'center',
-    flexDirection: 'row'
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
   floatingButton: {
     position: 'absolute',
     bottom: 20,
     right: 20,
-    backgroundColor: 'blue',
+    backgroundColor: '#FF9933',
     padding: 15,
     borderRadius: 30,
   },
@@ -167,6 +222,34 @@ const styles = StyleSheet.create({
   bottomModal: {
     justifyContent: 'flex-end',
     margin: 0,
+  },
+  contactInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 48,
+    height: 48,
+    borderRadius: 24, // Half of the width and height for a circular shape
+    marginRight: 12,
+  },
+  contactItem: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 8,
+    elevation: 2,
+  },
+  contactName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  contactNumber: {
+    fontSize: 16,
+    color: '#666',
   },
 });
 
