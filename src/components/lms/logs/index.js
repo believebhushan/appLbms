@@ -10,6 +10,9 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {FlashList} from '@shopify/flash-list';
 import Ionicon from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
+
+
 import UserAvatar from 'react-native-user-avatar';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 
@@ -23,7 +26,7 @@ const Logs = () => {
       try {
         const logsData = await getLogs({
           n: -1,
-          filter: {minTimestamp: Date.now() - 24 * 3600 * 1000 * 20},
+          filter: {minTimestamp: Date.now() - 24 * 3600 * 1000 * 5},
         });
         const groupedData = groupAndReturn(logsData);
         const updatedItems = groupedData.map(item => {
@@ -71,7 +74,15 @@ const Logs = () => {
               <Text style={styles.contactName}>
                 {item.name || item.phoneNumber}
               </Text>
-              <Text style={styles.contactNumber}>{item.timeDifference}</Text>
+              <Text style={styles.contactNumber}>
+                <Feather
+                  name={item.type == "INCOMING" ? "arrow-down-left": "arrow-up-right"}
+                  size={20}
+                  color="#aaa"
+                  style={{padding:15}}
+                />
+                {item.timeDifference}
+              </Text>
             </View>
           </View>
         </View>

@@ -80,7 +80,6 @@ public class MyModule extends ReactContextBaseJavaModule {
             final int DATE_COLUMN_INDEX = cursor.getColumnIndex(Calls.DATE);
             final int DURATION_COLUMN_INDEX = cursor.getColumnIndex(Calls.DURATION);
             final int NAME_COLUMN_INDEX = cursor.getColumnIndex(Calls.CACHED_NAME);
-            final int CACHED_PHOTO_COLUMN_INDEX = cursor.getColumnIndex(Calls.COMPOSER_PHOTO_URI);
 
             boolean minTimestampDefined = minTimestamp != null && !minTimestamp.equals("0");
             boolean minTimestampReached = false;
@@ -89,7 +88,6 @@ public class MyModule extends ReactContextBaseJavaModule {
                 String phoneNumber = cursor.getString(NUMBER_COLUMN_INDEX);
                 int duration = cursor.getInt(DURATION_COLUMN_INDEX);
                 String name = cursor.getString(NAME_COLUMN_INDEX);
-                String photoId = cursor.getString(CACHED_PHOTO_COLUMN_INDEX);
 
                 String timestampStr = cursor.getString(DATE_COLUMN_INDEX);
                 minTimestampReached = minTimestampDefined
@@ -118,8 +116,7 @@ public class MyModule extends ReactContextBaseJavaModule {
                     callLog.putString("dateTime", dateTime);
                     callLog.putString("type", type);
                     callLog.putInt("rawType", cursor.getInt(TYPE_COLUMN_INDEX));
-                    callLog.putString("photoUri",photoId);
-                    callLog.putString("accountId",cursor.getString(cursor.getColumnIndex(Calls.PHONE_ACCOUNT_ID)));
+                    callLog.putString("isRead", cursor.getString(cursor.getColumnIndex(Calls.IS_READ)));
                     result.pushMap(callLog);
                     callLogCount++;
                 }

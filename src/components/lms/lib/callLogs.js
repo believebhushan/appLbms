@@ -1,7 +1,24 @@
-import CallLogs from 'react-native-call-log';
+// import CallLogs from 'react-native-call-log';
+import { NativeModules } from 'react-native';
+const CallLogs = NativeModules.MyModule;
+
+
+const  load = async (limit, filter) =>{
+  if (!filter) return CallLogs.load(limit)
+  const {minTimestamp, maxTimestamp, phoneNumbers} = filter
+  const phoneNumbersArray = Array.isArray(phoneNumbers) ? phoneNumbers : typeof phoneNumbers === 'string' ? [phoneNumbers] : []
+  return CallLogs.loadWithFilter(
+    limit,
+    {
+      minTimestamp: minTimestamp ? minTimestamp.toString() : undefined,
+      maxTimestamp: maxTimestamp ? maxTimestamp.toString() : undefined,
+      phoneNumbers: JSON.stringify(phoneNumbersArray)
+    }
+  )
+}
 
 const getLogs = async ({n, filter}) => {
-  const data = await CallLogs.load(n || 20, {...filter});
+  const data = await load(n || 20, {...filter});
   return data;
 };
 
