@@ -21,7 +21,7 @@ const Logs = () => {
       try {
         const logsData = await getLogs({
           n: -1,
-          filter: {minTimestamp: Date.now() - 24 * 3600 * 1000*30},
+          filter: {minTimestamp: Date.now() - 24 * 3600 * 1000*1},
         });
         const groupedData = groupAndReturn(logsData);
         setData(groupedData);
@@ -101,13 +101,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: "#fff"
   },
   logItem: {
     backgroundColor: '#fff',
     padding: 16,
     borderRadius: 8,
     marginBottom: 8,
-    elevation: 2,
+    elevation: 4,
   },
   logName: {
     fontSize: 18,

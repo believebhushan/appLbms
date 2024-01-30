@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Image,
 } from 'react-native';
 import Contacts from 'react-native-contacts';
 import {FlashList} from '@shopify/flash-list';
@@ -14,6 +15,8 @@ import {useNavigation} from '@react-navigation/native';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 import  Modal  from 'react-native-modal';
 import Dialer from './Dialer';
+import UserAvatar from 'react-native-user-avatar';
+
 
 const call = number => {
   const cleanedNum = number.replace(/\s/g, '');
@@ -62,22 +65,35 @@ const ContactsList = ({route}) => {
     setModalVisible(false);
   };
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => call(item.phoneNumbers[0]?.number)}>
       <View style={styles.contactItem}>
         <View style={styles.contactRow}>
           <View style={styles.contactDetails}>
-            <Text style={styles.contactName}>
-              {item.givenName} {item.familyName}
-            </Text>
-            <Text style={styles.contactNumber}>
-              {item.phoneNumbers[0]?.number}
-            </Text>
+            <View style={styles.contactInfo}>
+              {item.thumbnailPath.length > 0 ? (
+                <Image
+                  source={{ uri: item.thumbnailPath }}
+                  style={styles.contactImage}
+                />
+              ) : (
+                <UserAvatar  name={item.givenName[0]} style={styles.avatar} />
+              )}
+              <View>
+                <Text style={styles.contactName}>
+                  {item.givenName} {item.familyName}
+                </Text>
+                <Text style={styles.contactNumber}>
+                  {item.phoneNumbers[0]?.number}
+                </Text>
+              </View>
+            </View>
           </View>
         </View>
       </View>
     </TouchableOpacity>
   );
+  
 
   return (
     <View style={styles.container}>
@@ -98,6 +114,7 @@ const ContactsList = ({route}) => {
           autoFocus={!(route?.params?.openDailer == true)}
         />
       </View>
+      <Text style={{margin: 10}}>{searchQuery ? "All contacts" : "Suggested"}</Text>
       {data.length > 0 ? (
         <FlashList
           data={data}
@@ -140,6 +157,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: "#fff"
   },
   contactItem: {
     backgroundColor: '#fff',
@@ -179,6 +197,29 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8,
   },
+  contactInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  contactImage: {
+    width: 48,
+    height: 48,
+    borderRadius: 24, // Half of the width and height for a circular shape
+    marginRight: 12,
+  },
+  avatar: {
+    width: 48,
+    height: 48,
+    borderRadius: 24, // Half of the width and height for a circular shape
+    marginRight: 12,
+  },
+  placeholderImage: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: 'gray', // Placeholder color
+    marginRight: 12,
+  }
 });
 
 export default ContactsList;
