@@ -1,6 +1,6 @@
 // SplashScreen.js
 import React, { useEffect } from 'react';
-import { View, Image, Text, StyleSheet } from 'react-native';
+import { View, Image, Text, StyleSheet, ActivityIndicator } from 'react-native';
 
 const SplashScreen = () => {
   useEffect(() => {
@@ -8,9 +8,7 @@ const SplashScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../images/logo.png')} style={styles.logo} />
-      <Text style={styles.appName}>K-Education</Text>
-      <Text style={styles.slogan}>Dare to be free, dare to go as far as your thought leads, and dare to carry that out in your life.</Text>
+      <ActivityIndicator/>
     </View>
   );
 };

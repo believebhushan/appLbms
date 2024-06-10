@@ -13,6 +13,7 @@ import {useNavigation} from '@react-navigation/native';
 import store from '../../store/configureStore';
 import { setUserAuth } from '../../actions/authActions';
 import loginUser from '../../utils/loginDetails';
+import CONSTANTS from '../../../constant';
 
 
 const LoginScreen = () => {
@@ -35,9 +36,10 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     setLoading(true);
+    const login_url = CONSTANTS.BASE_URL + "/api/users/login";
     try {
       const response = await fetch(
-        'https://lbms-ajua.onrender.com/api/users/login',
+        login_url,
         {
           method: 'POST',
           headers: {

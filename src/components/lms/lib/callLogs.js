@@ -80,4 +80,4 @@ function formatTimeDifference(timestamp) {
     return timestampDate.toLocaleString();
   }
 }
-export {getLogs, groupAndReturn,formatTimeDifference};
+export {getLogs, groupAndReturn,formatTimeDifference,load};

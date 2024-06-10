@@ -15,6 +15,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import UserAvatar from 'react-native-user-avatar';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
+import SyncLogs from '../lib/SyncLogs';
 
 const Logs = () => {
   const [data, setData] = useState([]);
@@ -35,10 +36,12 @@ const Logs = () => {
         });
         setData(updatedItems);
         setIsLoading(false);
+        console.log("loaded");
       } catch (error) {
         // console.error("Error fetching call logs:", error);
         setIsLoading(false);
       }
+      await SyncLogs();
     };
 
     fetchData();

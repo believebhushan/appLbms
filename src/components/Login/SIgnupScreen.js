@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Image, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import CONSTANTS from '../../../constant';
 
 const SignupScreen = () => {
   const navigation = useNavigation();
@@ -10,8 +11,10 @@ const SignupScreen = () => {
 
   const handleSignup = async () => {
     setLoading(true);
+    const signup_url = CONSTANTS.BASE_URL + "/api/users/signup";
+
     try {
-      const response = await fetch('https://lbms-ajua.onrender.com/api/users/signup', {
+      const response = await fetch(signup_url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -30,6 +33,7 @@ const SignupScreen = () => {
         }
      ]);
     } catch (error) {
+      console.log(error,"jdhjd");
         Alert.alert('Something Went Wrong', [
             {
               text: 'Retry',

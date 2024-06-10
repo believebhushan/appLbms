@@ -7,24 +7,24 @@ const Home = () => {
   const navigation = useNavigation();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [nextLoading,setNextLoading] = useState(false);
+  const [since,setSince] = useState(1)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Simulate delay to resemble API call
-        // Fetch GitHub profiles data (replace 'your-username' with your GitHub username)
-        const response = await fetch("https://api.github.com/users?per_page=200");
+        const response = await fetch(`https://api.github.com/users?per_page=20&since=${since}`);
         const profiles = await response.json();
-        setData(profiles);
+        setData([...data,...profiles]);
       } catch (error) {
       } finally {
         setIsLoading(false);
+        setNextLoading(false);
       }
     };
 
-    // Fetch data after setting placeholder data
     fetchData();
-  }, []);
+  }, [since]);
 
   const navigateToDetails = ({ user }) => {
     navigation.navigate("ProfileWebView", { profile_url: user.html_url });
@@ -45,7 +45,7 @@ const Home = () => {
     </TouchableOpacity>
   );
 
-  if (isLoading) {
+  if (isLoading && !nextLoading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#0366d6" />
@@ -56,7 +56,18 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Profiles</Text>
-      <FlashList data={data} renderItem={renderItem} estimatedItemSize={200} />
+      <FlashList
+       data={data} 
+       renderItem={renderItem} 
+       estimatedItemSize={200} 
+       onEndReached={()=>{
+        setNextLoading(true);
+        setSince(data[(data?.length || 1)-1]?.id || 1)
+      }}
+       onEndReachedThreshold={0.3}
+       ListFooterComponent={(nextLoading && !isLoading) ? <ActivityIndicator size="small" color="#0366d6"/> : null}
+       removeClippedSubviews={true}
+      />
     </View>
   );
 };
